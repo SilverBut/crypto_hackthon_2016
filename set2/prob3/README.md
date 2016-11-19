@@ -19,7 +19,7 @@ def random_key(l):
 
 ```
 随机加密过程如下：
-```
+```python
 def random_padm(m):
     return random_key(random.randint(5,10))+m+random_key(random.randint(5,10))
 
