@@ -1,46 +1,8 @@
-#    md4.py implements md4 hash class for Python
-#    Version 1.0
-#    Copyright (C) 2001-2002  Dmitry Rozmanov
-#
-#    based on md4.c from "the Python Cryptography Toolkit, version 1.0.0
-#    Copyright (C) 1995, A.M. Kuchling"
-#
-#    This library is free software; you can redistribute it and/or
-#    modify it under the terms of the GNU Lesser General Public
-#    License as published by the Free Software Foundation; either
-#    version 2.1 of the License, or (at your option) any later version.
-#
-#    This library is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-#    Lesser General Public License for more details.
-#
-#    You should have received a copy of the GNU Lesser General Public
-#    License along with this library; if not, write to the Free Software
-#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
-#    e-mail: dima@xenon.spb.ru
-#
-#====================================================================
+#!/usr/bin/env python3.5
+# -*- coding:utf-8 -*-
 
-# MD4 validation data
-
-md4_test= [
-      ('', 0x31d6cfe0d16ae931b73c59d7e0c089c0),
-      ("a",   0xbde52cb31de33e46245e05fbdbd6fb24),
-      ("abc",   0xa448017aaf21d8525fc10ae87aa6729d),
-      ("message digest",   0xd9130a8164549fe818874806e1c7014b),
-      ("abcdefghijklmnopqrstuvwxyz",   0xd79e1c308aa5bbcdeea8ed63df412da9),
-      ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-       0x043f8582f241db351ce627e153e7f0e4),
-      ("12345678901234567890123456789012345678901234567890123456789012345678901234567890",
-      0xe33b4ddc9c38f2199c3e7b164fcc0536),
-     ]
-
-#====================================================================
 from U32 import U32
 
-#--------------------------------------------------------------------
 class MD4:
     A = None
     B = None
@@ -50,14 +12,14 @@ class MD4:
     buf = []
 
     #-----------------------------------------------------
-    def __init__(self):
+    def __init__(self, A=0x67452301, B=0xefcdab89, C=0x98badcfe, D=0x10325476, numbytes=0):
 
 
-        self.A = U32(0x67452301)
-        self.B = U32(0xefcdab89)
-        self.C = U32(0x98badcfe)
-        self.D = U32(0x10325476)
-        self.count, self.len1, self.len2 = U32(0), U32(0), U32(0)
+        self.A = U32(A)
+        self.B = U32(B)
+        self.C = U32(C)
+        self.D = U32(D)
+        self.count, self.len1, self.len2 = U32(numbytes%64), U32((numbytes << 3) & 0xffffffff), U32((numbytes >> 29) & 0xffffffff)
         self.buf = [0x00] * 64
 
     #-----------------------------------------------------
@@ -73,7 +35,7 @@ class MD4:
     #-----------------------------------------------------
     def make_copy(self):
 
-        dest = new()
+        dest = MD4()
 
         dest.len1 = self.len1
         dest.len2 = self.len2
@@ -88,10 +50,10 @@ class MD4:
         return dest
 
     #-----------------------------------------------------
-    def update(self, str):
+    def update(self, st):
 
         buf = []
-        for i in str: buf.append(i)
+        for i in st: buf.append(i)
         ilen = U32(len(buf))
 
         # check if the first length is out of range
@@ -182,6 +144,8 @@ class MD4:
                 self.C = self.C + C
                 self.D = self.D + D
 
+        return self;
+
     #-----------------------------------------------------
     def digest(self):
 
@@ -245,11 +209,8 @@ def f3(a, b, c, d, k, s, X): return ROL(a + H(b, c, d) + X[k] + U32(0x6ed9eba1),
 # helper function
 def int_array2str(array):
         return bytes(array)
-        str = b''
+        st = b''
         for i in array:
-            str = str + chr(i)
-        return str
+            st = st + chr(i)
+        return st
 
-#--------------------------------------------------------------------
-# To be able to use md4.new() instead of md4.MD4()
-new = MD4

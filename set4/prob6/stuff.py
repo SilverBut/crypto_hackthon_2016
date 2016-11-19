@@ -69,7 +69,6 @@ def download(fn):
         lines = []
         while True:
             line = fp.readline().strip()
-            print line
             if not line:
                 break
             lines.append(line)
