@@ -1,4 +1,4 @@
-# Problem 3<id>. Single-byte XOR cipher<name>
+# Problem 4<id>. Detect single-character XOR
 
 ### 0x01 Question
 
