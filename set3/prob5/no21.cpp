@@ -1,84 +1,50 @@
-/*ÔÚcÓïÑÔÖĞ¿ÉÒÔÖ±½Ó¶ÔÕûÊı½øĞĞÒì»ò£¬*/
-/*Ã·É­Ğı×ªËØÊıµÄÉú³É·½·¨ÊÇ¶Ô´óÕûÊı½øĞĞÒì»ò*/ 
-#include<stdio.h> /*Periodparameters*/
-#define N 624
-#define M 397 
-#define MATRIX_A 0x9908b0dfUL 
-#define UPPER_MASK 0x80000000UL/*most significant w-rbits*/
-#define LOWER_MASK 0x7fffffffUL/*least significant rbits*/
+#include<stdio.h>
 
-static unsigned long mt[N];/*the  array  for   the  state  vector*/
-static int mti=N+1;
-void init_genrand(unsigned long s)
-{ 
-	mt[0]=s&0xffffffff;
-	for(mti=1;mti<N;mti++)
-	{ 
-		mt[mti]= (1812433253UL*(mt[mti-1]^(mt[mti-1]>>30))+mti); /*SeeKnuthTAOCPVol2.3rdEd.P.106formultiplier.*//*Inthepreviousversions,MSBsoftheseedaffect*//*onlyMSBsofthearraymt[].*//*2002/01/09modifiedbyMakotoMatsumoto*/
-		mt[mti]&=0xffffffffUL;//ºÍÕâ¸öÊı½øĞĞÒì»ò  È·¶¨µÃµ½µÄÎ»ÊıÊÇ32Î»µÄÊı 
+#define cm 624//ç”¨æ¥ç¡®å®šæ•°ç»„çš„å…ƒç´ çš„ä¸ªæ•° 
+int mt[cm];
+int index;
+//åˆ©ç”¨ç§å­å‘ç”Ÿå™¨è¿›è¡Œåˆå§‹åŒ–ã€‚
+void init_PRG(int seed){
+	int i=0;
+	mt[0]=seed;
+	for(i=1;i<cm;i++){
+		mt[i]= (1812433253*(mt[i-1]^(mt[i-1]>>30))+i)&0xffffffff;
+		//ä¸ºäº†è®©mt[i]ç¡®å®åœ¨32ä½çš„èŒƒå›´ä¸­ã€‚ 
+	}
+}
+void gene_PRG(){ //ç”ŸæˆPRG 
+	int i,y;
+	for(i=0;i<cm;i++){
+		y=(mt[i]&0x80000000)|(mt[(i+1)%624]&0x7fffffff);//åˆ©ç”¨æˆ–è¿ç®—ï¼Œç›¸å½“äºå¯¹ä¸¤ä¸ªç›¸åŠ ã€‚
+		mt[i]=mt[(i+397)%624]^(y>>1);
+		if((y%2)==0){
+			mt[i]=mt[i]^2567483615;
 		} 
+	} 
+	//ç›¸å½“äºæŠŠæ‰€æœ‰çš„mt[i]éƒ½è¿›è¡Œäº†åˆå§‹åŒ–ï¼Œå› æ­¤ï¼Œä¸ºäº†ç¡®å®šä»–ä»¬çš„å€¼éƒ½æ˜¯32ä½çš„
+	for(i=0;i<cm;i++){
+		mt[i]=mt[i]&0xffffffff;
+	} 
 } 
-		
-		
-/*initialize by  an array  with  array-length*/
-/*init_key is  the  array  for  initializing  keys*/
-/*key_length is its length*/  
-void init_by_array(unsigned long init_key[],int key_length)
-{ 
-		int i,j,k; 
-		init_genrand(19650218UL);//ÓÃÒ»¸öÖÖ×Ó¶ÔÊı×é½øĞĞ³õÊ¼»¯¡£ 
-		i=1;
-		j=0; 
-		k=(N>key_length?N:key_length);// 
-		for(;k;k--)
-		{ 
-		mt[i]=(mt[i]^((mt[i-1]^(mt[i-1]>>30))*1664525UL))+init_key[j]+j;/*nonlinear*/ 
-		mt[i]&=0xffffffffUL;/*forWORDSIZE>32machines*/
-		i++;j++;
-		 if(i>=N)
-		 {mt[0]=mt[N-1];i=1;}
-		 if(j>=key_length)j=0; 
-		} 
-		for(k=N-1;k;k--)
-		{ mt[i]=(mt[i]^((mt[i-1]^(mt[i-1]>>30))*1566083941UL)) -i;/*nonlinear*/ 
-		mt[i]&=0xffffffffUL;/*forWORDSIZE>32machines*/i++;
-		if(i>=N)
-		{mt[0]=mt[N-1];i=1;} } 
-		mt[0]=0x80000000UL;
-		/*MSBis1;assuringnon-zeroinitialarray*/ } /*generatesarandomnumberon[0,0xffffffff]-interval*/
-unsigned long genrand_int32(void) 
-{ 
-unsigned long y; 
-static unsigned long mag01[2]={0x0UL,MATRIX_A};
-/*mag01[x]=x*MATRIX_A  for  x=0,1*/ 
-if(mti>=N) {/*generate  N  word  sat  one  time*/ 
-int kk; 
-if(mti==N+1)/*if init_genrand()  has  not  been called,*/ 
-init_genrand(5489UL);/*a default initial seed  isused*/
-for(kk=0;kk<N-M;kk++)
-{ 
-y=(mt[kk]&UPPER_MASK)|(mt[kk+1]&LOWER_MASK);//ÊµÏÖÁËÎ±ÂëÖĞµÄ¶ÔyµÄ³õÊ¼»¯¡£ 
-mt[kk]=mt[kk+M]^(y>>1)^mag01[y&0x1UL];
- } for(;kk<N-1;kk++)
- { y=(mt[kk]&UPPER_MASK)|(mt[kk+1]&LOWER_MASK); 
- mt[kk]=mt[kk+(M-N)]^(y>>1)^mag01[y&0x1UL]; 
- } 
- y=(mt[N-1]&UPPER_MASK)|(mt[0]&LOWER_MASK);
-  mt[N-1]=mt[M-1]^(y>>1)^mag01[y&0x1UL];mti=0; } 
-  y=mt[mti++]; /*Tempering*/
-y^=(y>>11);
-y^=(y<<7)&0x9d2c5680UL;
-y^=(y<<15)&0xefc60000UL;
-y^=(y>>18);
-return y; 
-}
-int main(void){ 
-int i;
-unsigned long init[4]={0x123,0x234,0x345,0x456},length=4;
-init_by_array(init,length);
-printf("1000 outputs of genrand_int32()\n");
-for(i=0;i<20;i++)
-{ 
-printf("%10lu\n",genrand_int32()); 
-}
-}
+int ext_PRG(){
+	if(index==0){
+		gene_PRG();
+	}
+	int y=mt[index];
+	y=y^(y>>11);
+	y=y^((y<<7)&0x9d2c5680);
+	y=y^((y<<15)&0xefc60000);
+	y=y^(y>>18);
+	index=(index+1)%624;
+	return y;
+} 
+int main(){
+    int seed;
+	printf("input a seed:");
+	scanf("%d",&seed);
+	init_PRG(seed);
+	int i;
+	for(i=0;i<10;i++){
+		printf("%d\n",ext_PRG());
+	}	
+} 
