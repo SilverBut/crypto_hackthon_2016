@@ -1,4 +1,4 @@
-
+# coding:utf-8
 def hex_xor(hexstring1,hexstring2):
     return "".join([chr(int(x,16)^int(y,16)).encode('hex')[1] for (x,y) in zip(hexstring1,hexstring2)])
 	##先按位拆分两串字符串，按位异或后，连接字符串按hex编码。

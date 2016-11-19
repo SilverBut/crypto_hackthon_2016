@@ -1,3 +1,4 @@
+# coding: utf-8
 import base64
 
 def hex2base64(hexstring):
