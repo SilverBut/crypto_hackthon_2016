@@ -38,7 +38,9 @@ def genKey():
 def encrypt(message, public_key):
     temp=binascii.hexlify(message.encode())
     temp=int(temp,16)
+    print(temp)
     temp=powmod(temp,public_key[0],public_key[1])
+    print(temp)
     temp=int(temp.digits())
     temp=hex(temp)[2:]
     if(len(temp)%2!=0):
@@ -50,6 +52,7 @@ def decrypt(cipher, private_key):
     temp=base64.b64decode(cipher.encode())
     temp=int(temp,16)
     temp=powmod(temp,private_key[0],private_key[1])
+    print(temp)
     temp=int(temp.digits())
     temp=hex(temp)[2:]
     if(len(temp)%2!=0):
@@ -72,3 +75,4 @@ def run():
 
 if __name__=="__main__":
     run()
+    
