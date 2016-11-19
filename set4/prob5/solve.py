@@ -9,14 +9,11 @@ import struct
 key_raw = urandom(0x10)
 key_raw = b'YELLOW SUBMARINE'
 
-def _left_rotate(n, b):
-    return ((n << b) | (n >> (32 - b))) & 0xffffffff
-
 def check(data, tag):
     gen_tag = sha1(key_raw + data)
     return (gen_tag == tag)
 
-def gen_md_padding(data_len):
+def gen_sha1_padding(data_len):
     return ('\x80' +
             ('\x00' * ((56 - (data_len + 1) % 64) % 64)) +
             struct.pack('>Q', data_len * 8))
@@ -27,8 +24,8 @@ def sha1_hash_no_padding(data, h):
 def hash_extend_attack(old_message, old_tag, new_message):
     # try key length
     for i in xrange(100):
-        old_pad = gen_md_padding(len(old_message) + i)
-        new_pad = gen_md_padding(len(old_message) + len(old_pad) + len(new_message)
+        old_pad = gen_sha1_padding(len(old_message) + i)
+        new_pad = gen_sha1_padding(len(old_message) + len(old_pad) + len(new_message)
                                  + i)
         new_data = new_message + new_pad
         a = struct.unpack(">I", (old_tag[0:4]))[0]
