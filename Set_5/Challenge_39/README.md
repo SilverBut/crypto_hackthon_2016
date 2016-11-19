@@ -9,12 +9,12 @@ I recommend you not bother with primegen, but do take the time to get your own E
 
 Now:
 * Generate 2 random primes. We'll use small numbers to start, so you can just pick them out of a prime table. Call them "p" and "q".
-* Let n be p * q. Your RSA math is modulo n.
-* Let et be (p-1)*(q-1) (the "totient"). You need this value only for keygen.
+* Let n be p \* q. Your RSA math is modulo n.
+* Let et be (p-1)\*(q-1) (the "totient"). You need this value only for keygen.
 * Let e be 3.
 * Compute d = invmod(e, et). invmod(17, 3120) is 2753.
 * Your public key is [e, n]. Your private key is [d, n].
-* To encrypt: c = m**e%n. To decrypt: m = c**d%n
+* To encrypt: c = m\*\*e%n. To decrypt: m = c\*\*d%n
 * Test this out with a number, like "42".
 * Repeat with bignum primes (keep e=3).
 
