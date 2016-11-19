@@ -1,7 +1,7 @@
 __author__ = 'Administrator'
 import random
 import AES_CBC_H,pkcs7
-import set1.AES_ECB
+import AES_ECB
 
 def random_key(l):
     if l%2!=0:
@@ -16,7 +16,7 @@ def random_encrypto(m):
     m = pkcs7.pkcs7(random_padm(m), 16)
     #ECB
     if random.randint(1, 2) == 1:
-        return set1.AES_ECB.encrypt(m, key),'ECB'
+        return AES_ECB.encrypt(m, key),'ECB'
     #CBC
     else:
         iv = random_key(16)
