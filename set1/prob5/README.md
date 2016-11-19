@@ -5,9 +5,9 @@
 Burning 'em, if you ain't quick and nimble
 I go crazy when I hear a cymbal
 ```
-此题要求我们用密钥* ICE* 加密上一段话，使用repeating-key XOR。
+此题要求我们用密钥*ICE* 加密上一段话，使用repeating-key XOR。
 
-repeating-key XOR，是指按顺序依次使用ICE的每个字节，一个字节的明文将会与*I*异或，下一个*C*，下一个*E*，然后再轮到* I* 等等。
+repeating-key XOR，是指按顺序依次使用ICE的每个字节，一个字节的明文将会与*I*异或，下一个*C*，下一个*E*，然后再轮到*I* 等等。
 
 
 ### 0x02 Step （main code）
