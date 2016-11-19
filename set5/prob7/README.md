@@ -16,6 +16,7 @@
 ### 0x04 More
 * 实现RSA的时候出现了几个问题。首先是`m\*\*e%n`这样的大数指数运算速度太慢。最后找到了`gmpy2.powmod`函数来解决。
 * 因为一开始选择的素数长度不够，所以使用了`Crypto.Util.number.getPrime()`函数来取得需要位数的大素数。
+
 ### 0x05 Reference
 [PyCrypto API Documentation](http://pythonhosted.org/pycrypto/)
 [Gmpy2 API Documentation](http://gmpy2.readthedocs.io/en/latest)
