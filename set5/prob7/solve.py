@@ -2,15 +2,6 @@ import random,binascii,base64
 from gmpy2 import powmod
 from Crypto.Util import number
 
-def isPrime(n):
-    if n==2 or n==3: return True
-    if n%2==0 or n<2: return False
-    for i in range(3,int(n**0.5)+1,2):   # only odd numbers
-        if n%i==0:
-            return False    
-
-    return True
-
 def egcd(a, b):
     if(a==0):
         return (b,0,1)
@@ -70,8 +61,9 @@ def run():
     (public_key,private_key)=genKey()
 
     print("Public Key:\ne: "+str(public_key[0])+"\nn: "+str(public_key[1]))
-    print("Private Key:\nd: "+str(private_key[0])+"\nn: "+str(private_key[1]))
+    print("\nPrivate Key:\nd: "+str(private_key[0])+"\nn: "+str(private_key[1]))
 
+    print("\n\nPlease input a string:")
     message=input()
     cipher=encrypt(message,public_key)
     print("\nCipher: "+cipher)
