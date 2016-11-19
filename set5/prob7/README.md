@@ -5,6 +5,7 @@
 
 ### 0x02 Environment
 * Python 3.5 with gmpy2,pycrypto,binascii
+
 ### 0x03 Step
 1. 使用__Crypto.Util.number.getPrime(length)__函数来产生足够长的大素数。
 2. 通过自己写的__egcd__以及__invmod__函数来找到合适的p使得`p*d=1(mod n)`。
