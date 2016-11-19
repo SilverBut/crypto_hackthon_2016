@@ -9,7 +9,7 @@ def profile_for(m):
     m=m.replace('=','')
     m='email='+m+'&uid=10&role=user'
     return m
-
+ 
 
 key=R_ECB_CBC.random_key(16)
 def encryptrandom(m):
