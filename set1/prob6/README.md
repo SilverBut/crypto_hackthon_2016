@@ -1,7 +1,7 @@
 # Problem 6<id>. Break repeating-key XOR
 
 ### 0x01 Question
-解密一段被repeating-key XOR加密后的base64。
+解密一段被repeating-key XOR 加密后的base64
 
 ### 0x02 Step （main code）、
 此题可以直接暴力破解，也可以先锁定KEY，后者步骤如下：
@@ -22,7 +22,7 @@ def hammingdis(hex1, hex2):
 - 为每个KEYSIZE，生成第一个KEYSIZE值生成的字节数和第二个KEYSIZE值生成的字节，并找到它们之间的编辑距离。
 - 当KEYSIZE的距离最小时的KEY可能是真正的KEY，不过可能会得到KEYSIZE值生成最小的2~3个的，或者4个KEYSIZE块而不是2个和平均距离。
 
-```
+```python
 def judgehammingdis(hex,tlen):
     s=[hex[2*tlen*i:2*tlen*(i+1)] for i in range(0,len(hex)/(2*tlen))]
     alen=0
