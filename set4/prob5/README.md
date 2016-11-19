@@ -1,4 +1,4 @@
-# Problem e9. Break a SHA-1 keyed MAC using length extension
+# Problem 29. Break a SHA-1 keyed MAC using length extension
 
 ### 0x01 Question
 
@@ -7,17 +7,17 @@
 
 ### 0x02 Step (main code)
 
-扩展后的明文的形式为 原明文新明文
+扩展后的明文的形式为 原明文+原padding+新明文
 
 1. 首先模仿SHA1计算原文的摘要里的padding
 2. 构造新的明文为old_message + old_pad + new_message
 3. 模仿SHA1计算新的明文的padding
-4. 这个新明文的哈希的结果和我们是可以计算出来的,方法为下面的gen_sha1_hash
+4. 这个新明文的哈希的结果我们是可以计算出来的,方法为下面的sha1_hash_no_padding
 
 主要代码如下(python2.7)
 ```python
-old_pad = gen_md_padding(len(old_message) + i)
-new_pad = gen_md_padding(len(old_message) + len(old_pad) + len(new_message)
+old_pad = gen_sha1_padding(len(old_message) + i)
+new_pad = gen_sha1_padding(len(old_message) + len(old_pad) + len(new_message)
                          + i)
 new_data = new_message + new_pad
 a = struct.unpack(">I", (old_tag[0:4]))[0]
