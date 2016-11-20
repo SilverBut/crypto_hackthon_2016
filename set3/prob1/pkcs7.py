@@ -1,5 +1,11 @@
 __author__ = 'Administrator'
 
+def pkcs7(m,l):
+    if len(m)%l!=0:
+        return m+chr(l-len(m) % l)*(l-len(m) % l)
+    else:
+        return m+chr(l)*l
+
 def d_pkcs7(m,l):
     n=ord(m[-1])
     if n>l:
