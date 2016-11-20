@@ -22,11 +22,14 @@ and
 r = (g^k mod p) mod q
 s = (k^-1)(H(m)+x*r) mod q
 ```
+So we can try every k in [0, 2\*\*16] and see if "r" calculated from our k meets the "r" given by the problem.
 
-First one can be used to brute k out, and since the problem already gave us a hash value, we can use it to verify k.
+Besides, since all other values (such as some hash values) have been provided by the game, we do not need to re calculate them again.
 
 `solve.py` will give you the result.
 
 ## 0x03 What's the point
+
+The problem is really easy, if you have a powerful CPU and if you know how to do it fast.
 
 ## 0x04 Reference
